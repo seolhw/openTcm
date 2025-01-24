@@ -2,20 +2,9 @@ import { Card, CardHeader, CardTitle, CardContent } from './ui/card'
 import { Button } from './ui/button'
 import { Share2, BookmarkPlus } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
+import { Prescription } from '@/payload-types'
 
-interface PrescriptionCardProps {
-  name: string
-  composition: string
-  mainIndication: string
-  effect: string
-}
-
-export function PrescriptionCard({
-  name,
-  composition,
-  mainIndication,
-  effect,
-}: PrescriptionCardProps) {
+export function PrescriptionCard({ name, composition, mainIndication, effect }: Prescription) {
   return (
     <Card className="w-full group hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
       <CardHeader className="flex flex-row items-center justify-between pb-4 pt-5 px-6">

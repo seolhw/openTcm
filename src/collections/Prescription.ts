@@ -3,6 +3,12 @@ import type { CollectionConfig } from 'payload'
 // 中医处方
 export const Prescription: CollectionConfig = {
   slug: 'prescription',
+  access: {
+    create: () => true,
+    read: () => true,
+    update: () => true,
+    delete: () => true,
+  },
   fields: [
     {
       name: 'name', // 方剂名称
