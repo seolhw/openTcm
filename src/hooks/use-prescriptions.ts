@@ -5,15 +5,24 @@ import { Prescription } from '@/payload-types'
 import { getPrescriptions, getPrescription, createPrescription } from '@/lib/api'
 import { GetOrCreateCollectionsResult } from '@/payload-types-more'
 
-// 获取帖子列表
-export function usePrescriptions() {
-  return useSWR('prescriptions', async () => {
-    const result = await getPrescriptions()
-    return result.docs
-  })
+// 获取处方列表
+export function usePrescriptions(page: number) {
+  return useSWR(
+    `prescriptions-${page}`,
+    async () => {
+      const result = await getPrescriptions(page)
+      return result
+    },
+    // {
+    //   revalidateOnFocus: false,
+    //   revalidateOnReconnect: false,
+    //   revalidateOnMount: false,
+    //   revalidateOnRevalidate: false,
+    // },
+  )
 }
 
-// 获取单个帖子
+// 获取处方
 export function usePrescription(prescriptionId: string) {
   return useSWR(prescriptionId ? ['prescription', prescriptionId] : null, async () => {
     const result = await getPrescription(prescriptionId)
@@ -21,7 +30,7 @@ export function usePrescription(prescriptionId: string) {
   })
 }
 
-// 创建帖子
+// 创建处方
 export function useCreatePrescription() {
   const { toast } = useToast()
 

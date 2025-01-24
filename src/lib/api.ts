@@ -1,4 +1,4 @@
-import { Prescription } from '@/payload-types'
+import { Prescription, Tmc } from '@/payload-types'
 import { fetchAPIBuild } from './fetchAPI'
 // import { stringify } from 'qs-esm'
 // import type { Where } from 'payload'
@@ -19,8 +19,12 @@ export const getPrescription = (
   return fetchApi(`/prescription/${id}`)
 }
 
-export const getPrescriptions = (): Promise<GetListCollectionsResult<Prescription>> => {
-  return fetchApi(`/prescription?depth=0`)
+export const getPrescriptions = (page: number): Promise<GetListCollectionsResult<Prescription>> => {
+  const params = new URLSearchParams()
+  params.set('depth', '0')
+  params.set('page', page.toString())
+  params.set('limit', '9')
+  return fetchApi(`/prescription?${params.toString()}`)
 }
 
 export const createPrescription = (data: Partial<Prescription>) =>
@@ -28,3 +32,11 @@ export const createPrescription = (data: Partial<Prescription>) =>
     method: 'POST',
     body: JSON.stringify(data),
   })
+
+export const getTmcs = (page: number): Promise<GetListCollectionsResult<Tmc>> => {
+  const params = new URLSearchParams()
+  params.set('depth', '0')
+  params.set('page', page.toString())
+  params.set('limit', '9')
+  return fetchApi(`/tmc?${params.toString()}`)
+}

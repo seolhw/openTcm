@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <SidebarHeader className="border-b border-border/50 px-6 py-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold tracking-tight">中医处方数据库</h2>
-                <SidebarTrigger />
+                {/* <SidebarTrigger /> */}
               </div>
             </SidebarHeader>
             <SidebarContent className="w-full">
@@ -33,22 +33,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <span className="text-xs font-medium text-muted-foreground/70">导航</span>
                 </SidebarGroupLabel>
                 <SidebarMenu className="space-y-1">
-                  <SidebarMenuButton asChild>
+                  {/* <SidebarMenuButton asChild>
                     <Link href="/" className="gap-3 px-4 py-2">
                       <Home className="h-4 w-4" />
                       <span>首页</span>
                     </Link>
-                  </SidebarMenuButton>
+                  </SidebarMenuButton> */}
                   <SidebarMenuButton asChild>
-                    <Link href="/prescriptions" className="gap-3 px-4 py-2">
+                    <Link href="/" className="gap-3 px-4 py-2">
                       <Book className="h-4 w-4" />
                       <span>处方库</span>
                     </Link>
                   </SidebarMenuButton>
                   <SidebarMenuButton asChild>
-                    <Link href="/search" className="gap-3 px-4 py-2">
+                    <Link href="/tmc" className="gap-3 px-4 py-2">
                       <Search className="h-4 w-4" />
-                      <span>搜索</span>
+                      <span>中药库</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenu>
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Sidebar>
 
           <main className="flex-1 overflow-auto w-full">
-            <div className="h-full px-8 pt-4 w-full">{children}</div>
+            <div className="h-full py-4 px-8 w-full">{children}</div>
           </main>
         </div>
       </SidebarProvider>
