@@ -1,8 +1,13 @@
-# blank
+# openTcm
 
-blank
+> 开放中医药数据库，提供 中草药，方剂 查询和学习
 
-## Attributes
+## 数据库
 
-- **Database**: mongodb
-- **Storage Adapter**: localDisk
+- 中草药
+- 方剂
+
+## 数据来源
+
+均来自 中国中医科学院中医药信息研究所
+
