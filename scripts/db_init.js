@@ -32,7 +32,7 @@ async function insertExcelDataToDB(filePath) {
       bom: true,
     })
 
-    for (const record of records.slice(0, 1)) {
+    for (const record of records) {
       const sql = `INSERT INTO prescription (name, composition, main_indication, effect) 
       VALUES ($1, $2, $3, $4)
       ON CONFLICT (name, composition) DO NOTHING;
@@ -94,8 +94,8 @@ async function insertExcelDataToDB2(filePath) {
 }
 
 // Example usage
-// await insertExcelDataToDB('./方剂.csv')
-await insertExcelDataToDB2('./中药性味归经.csv')
+await insertExcelDataToDB('./方剂.csv')
+// await insertExcelDataToDB2('./中药性味归经.csv')
 
 client.end()
 
