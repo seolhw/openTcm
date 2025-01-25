@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <SidebarMenuButton asChild>
                     <Link href="/search" className="gap-3 px-4 py-2">
                       <Search className="h-4 w-4" />
-                      <span>搜索</span>
+                      <span>高级搜索</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenu>

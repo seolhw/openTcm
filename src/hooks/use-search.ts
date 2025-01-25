@@ -19,6 +19,7 @@ export function useSearch({ query, fields, page, limit, collection }: SearchPara
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      revalidateOnMount: false,
     },
   )
 }
