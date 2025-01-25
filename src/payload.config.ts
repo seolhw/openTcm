@@ -41,6 +41,7 @@ export default buildConfig({
     }),
     // idType: 'uuid',
   }),
+  localization: false,
   sharp,
   debug: true,
   plugins: [
@@ -51,6 +52,7 @@ export default buildConfig({
         tmc: 10,
         prescription: 20,
       },
+      reindexBatchSize: 5,
       beforeSync: beforeSyncWithSearch,
       searchOverrides: {
         fields: ({ defaultFields }) => {
