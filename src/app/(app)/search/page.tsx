@@ -43,7 +43,9 @@ const tmcFields = ['name', 'taste', 'meridian'] as const
 export default function SearchPage() {
   const [searchInput, setSearchInput] = useState('')
   const [searchTags, setSearchTags] = useState<string[]>([])
-  const [searchQuery] = useDebounce(searchTags.join(' '), 500)
+
+  // const [searchQuery] = useDebounce(searchTags.join(' '), 500)
+
   const [currentPage, setCurrentPage] = useState(1)
   const [advancedParams, setAdvancedParams] = useState<AdvancedSearchParams>({
     type: 'prescription',
@@ -58,7 +60,7 @@ export default function SearchPage() {
     fields: advancedParams.searchFields,
     page: currentPage,
     limit: 9,
-    collection: 'prescription',
+    collection: advancedParams.type as 'prescription' | 'tmc',
   })
 
   // 根据当前搜索类型获取相应的数据
