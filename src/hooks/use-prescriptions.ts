@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
 import { useToast } from './use-toast'
 import { Prescription } from '@/payload-types'
-import { getPrescriptions, getPrescription, createPrescription } from '@/lib/api'
+import { getPrescriptions, getPrescription, createPrescription, search } from '@/lib/api'
 import { GetOrCreateCollectionsResult } from '@/payload-types-more'
 
 // 获取处方列表
@@ -13,12 +13,12 @@ export function usePrescriptions(page: number) {
       const result = await getPrescriptions(page)
       return result
     },
-    // {
-    //   revalidateOnFocus: false,
-    //   revalidateOnReconnect: false,
-    //   revalidateOnMount: false,
-    //   revalidateOnRevalidate: false,
-    // },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      // revalidateOnMount: false,
+      // revalidateOnRevalidate: false,
+    },
   )
 }
 

@@ -19,6 +19,7 @@
     "@payloadcms/db-vercel-postgres": "latest",
     "@payloadcms/next": "latest",
     "@payloadcms/payload-cloud": "latest",
+    "@payloadcms/plugin-search": "^3.19.0",
     "@payloadcms/richtext-lexical": "latest",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.5",
@@ -59,6 +60,7 @@
     "next": "15.1.5",
     "next-themes": "^0.4.4",
     "payload": "latest",
+    "qs-esm": "^7.0.2",
     "react": "19.0.0",
     "react-day-picker": "8.10.1",
     "react-dom": "19.0.0",
@@ -70,6 +72,7 @@
     "swr": "^2.3.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.4",
     "vaul": "^1.1.2",
     "zod": "^3.24.1"
   },

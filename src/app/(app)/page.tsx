@@ -18,6 +18,7 @@ import {
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const { data, isLoading } = usePrescriptions(currentPage)
 
@@ -44,6 +45,8 @@ export default function Home() {
     return pages
   }
 
+  // const { data: searchPrescriptionsData } = useSearchPrescriptions(searchQuery)
+
   return (
     <div className="container mx-auto space-y-4">
       <div className="flex items-center justify-between gap-8">
@@ -54,7 +57,12 @@ export default function Home() {
         <div className="flex items-center gap-4">
           <div className="relative w-[320px]">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="搜索处方名称、包含中药名称..." className="pl-10 pr-4" />
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="搜索处方名称、包含中药名称..."
+              className="pl-10 pr-4"
+            />
           </div>
           <Button variant="outline" className="gap-2 px-5">
             <Filter className="h-4 w-4" />

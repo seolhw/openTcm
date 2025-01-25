@@ -15,6 +15,7 @@ export interface Config {
     media: Media;
     prescription: Prescription;
     tmc: Tmc;
+    search: Search;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -25,6 +26,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     prescription: PrescriptionSelect<false> | PrescriptionSelect<true>;
     tmc: TmcSelect<false> | TmcSelect<true>;
+    search: SearchSelect<false> | SearchSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -123,6 +125,34 @@ export interface Tmc {
   createdAt: string;
 }
 /**
+ * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search".
+ */
+export interface Search {
+  id: number;
+  title?: string | null;
+  priority?: number | null;
+  doc:
+    | {
+        relationTo: 'tmc';
+        value: number | Tmc;
+      }
+    | {
+        relationTo: 'prescription';
+        value: number | Prescription;
+      };
+  name?: string | null;
+  composition?: string | null;
+  mainIndication?: string | null;
+  effect?: string | null;
+  taste?: string | null;
+  meridian?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
@@ -144,6 +174,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tmc';
         value: number | Tmc;
+      } | null)
+    | ({
+        relationTo: 'search';
+        value: number | Search;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -238,6 +272,23 @@ export interface PrescriptionSelect<T extends boolean = true> {
  */
 export interface TmcSelect<T extends boolean = true> {
   name?: T;
+  taste?: T;
+  meridian?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_select".
+ */
+export interface SearchSelect<T extends boolean = true> {
+  title?: T;
+  priority?: T;
+  doc?: T;
+  name?: T;
+  composition?: T;
+  mainIndication?: T;
+  effect?: T;
   taste?: T;
   meridian?: T;
   updatedAt?: T;

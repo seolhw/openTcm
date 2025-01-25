@@ -3,12 +3,19 @@ import { Button } from './ui/button'
 import { Share2, BookmarkPlus } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
 import { Tmc } from '@/payload-types'
+import { HighlightText } from './highlight-text'
 
-export function HerbCard({ name, taste, meridian }: Tmc) {
+interface HerbCardProps extends Tmc {
+  keywords?: string[]
+}
+
+export function HerbCard({ name, taste, meridian, keywords = [], ...props }: HerbCardProps) {
   return (
     <Card className="w-full group hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
       <CardHeader className="flex flex-row items-center justify-between pb-4 pt-5 px-6">
-        <CardTitle className="text-xl font-medium tracking-tight">{name}</CardTitle>
+        <CardTitle className="text-xl font-medium tracking-tight">
+          <HighlightText text={name} keywords={keywords} />
+        </CardTitle>
         <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
           <TooltipProvider>
             <Tooltip>
@@ -32,16 +39,18 @@ export function HerbCard({ name, taste, meridian }: Tmc) {
           </TooltipProvider>
         </div>
       </CardHeader>
-      <CardContent className="px-6 pb-6">
-        <div className="space-y-5">
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground/80 mb-2">性味</h4>
-            <p className="text-sm leading-relaxed text-foreground/90">{taste}</p>
-          </div>
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground/80 mb-2">归经</h4>
-            <p className="text-sm leading-relaxed text-foreground/90">{meridian}</p>
-          </div>
+      <CardContent className="space-y-4 px-6 pb-6">
+        <div>
+          <h4 className="text-sm font-medium text-muted-foreground/80 mb-2">性味</h4>
+          <p className="text-sm leading-relaxed text-foreground/90">
+            <HighlightText text={taste} keywords={keywords} />
+          </p>
+        </div>
+        <div>
+          <h4 className="text-sm font-medium text-muted-foreground/80 mb-2">归经</h4>
+          <p className="text-sm leading-relaxed text-foreground/90">
+            <HighlightText text={meridian} keywords={keywords} />
+          </p>
         </div>
       </CardContent>
     </Card>

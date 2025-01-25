@@ -33,12 +33,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <span className="text-xs font-medium text-muted-foreground/70">导航</span>
                 </SidebarGroupLabel>
                 <SidebarMenu className="space-y-1">
-                  {/* <SidebarMenuButton asChild>
-                    <Link href="/" className="gap-3 px-4 py-2">
-                      <Home className="h-4 w-4" />
-                      <span>首页</span>
-                    </Link>
-                  </SidebarMenuButton> */}
                   <SidebarMenuButton asChild>
                     <Link href="/" className="gap-3 px-4 py-2">
                       <Book className="h-4 w-4" />
@@ -49,6 +43,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <Link href="/tmc" className="gap-3 px-4 py-2">
                       <Search className="h-4 w-4" />
                       <span>中药库</span>
+                    </Link>
+                  </SidebarMenuButton>
+                  <SidebarMenuButton asChild>
+                    <Link href="/search" className="gap-3 px-4 py-2">
+                      <Search className="h-4 w-4" />
+                      <span>搜索</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenu>

@@ -12,3 +12,11 @@ export function useTmcs(page: number) {
     return result
   })
 }
+
+// 搜索中药
+// export function useSearchTmcs(query: string) {
+//   return useSWR(query ? ['search-tmcs', query] : null, async () => {
+//     const result = await searchTmcs(query)
+//     return result.docs
+//   })
+// }
