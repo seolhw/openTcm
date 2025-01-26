@@ -39,6 +39,7 @@ export default buildConfig({
     logger: new DefaultLogger({
       writer: new ConsoleLogWriter(),
     }),
+    push: false,
     // idType: 'uuid',
   }),
   localization: false,
