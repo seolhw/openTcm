@@ -49,7 +49,7 @@ export default function SearchPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [advancedParams, setAdvancedParams] = useState<AdvancedSearchParams>({
     type: 'prescription',
-    searchFields: ['name'],
+    searchFields: ['name', 'composition', 'mainIndication', 'taste', 'meridian'],
   })
 
   // 将搜索词按空格分割成数组
