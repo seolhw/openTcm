@@ -1,5 +1,5 @@
 {
-  "name": "OpenTcm - 中医处方数据库",
+  "name": "OpenTcm - 中医方剂数据库",
   "short_name": "OpenTcm",
   "description": "开放中医药数据库，提供中草药、方剂查询和学习",
   "start_url": "/",
@@ -24,9 +24,9 @@
   "prefer_related_applications": false,
   "shortcuts": [
     {
-      "name": "搜索处方",
+      "name": "搜索方剂",
       "url": "/search",
-      "description": "快速搜索中医处方"
+      "description": "快速搜索中医方剂"
     },
     {
       "name": "中药库",

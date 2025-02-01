@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-// 中医处方
+// 中医方剂
 export const Prescription: CollectionConfig = {
   slug: 'prescription',
   access: {

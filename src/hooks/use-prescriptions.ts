@@ -5,7 +5,7 @@ import { Prescription } from '@/payload-types'
 import { getPrescriptions, getPrescription, createPrescription, search } from '@/lib/api'
 import { GetOrCreateCollectionsResult } from '@/payload-types-more'
 
-// 获取处方列表
+// 获取方剂列表
 export function usePrescriptions(page: number) {
   return useSWR(
     `prescriptions-${page}`,
@@ -22,7 +22,7 @@ export function usePrescriptions(page: number) {
   )
 }
 
-// 获取处方
+// 获取方剂
 export function usePrescription(prescriptionId: string) {
   return useSWR(prescriptionId ? ['prescription', prescriptionId] : null, async () => {
     const result = await getPrescription(prescriptionId)
@@ -30,7 +30,7 @@ export function usePrescription(prescriptionId: string) {
   })
 }
 
-// 创建处方
+// 创建方剂
 export function useCreatePrescription() {
   const { toast } = useToast()
 
@@ -50,7 +50,7 @@ export function useCreatePrescription() {
       onSuccess: (data: GetOrCreateCollectionsResult<Prescription>) => {
         toast({
           title: '创建成功',
-          description: `处方 ${data.doc.name} 已创建`,
+          description: `方剂 ${data.doc.name} 已创建`,
         })
       },
       onError: (error) => {

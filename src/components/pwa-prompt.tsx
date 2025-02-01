@@ -43,7 +43,7 @@ export function PWAPrompt() {
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <h3 className="font-medium">添加到主屏幕</h3>
-              <p className="text-sm text-muted-foreground">安装应用到主屏幕，随时查看中医处方</p>
+              <p className="text-sm text-muted-foreground">安装应用到主屏幕，随时查看中医方剂</p>
             </div>
             <Button
               variant="ghost"

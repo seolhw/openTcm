@@ -5,7 +5,7 @@ import { Prescription } from '@/payload-types'
 import { GetOrCreateCollectionsResult } from '@/payload-types-more'
 import { getTmcs } from '@/lib/api'
 
-// 获取处方列表
+// 获取方剂列表
 export function useTmcs(page: number) {
   return useSWR(`tmcs-${page}`, async () => {
     const result = await getTmcs(page)

@@ -51,8 +51,8 @@ export default function Home() {
     <div className="container mx-auto space-y-4">
       <div className="flex items-center justify-between gap-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">处方列表</h1>
-          <p className="text-sm text-muted-foreground mt-2">收录共 {totalItems} 个处方</p>
+          <h1 className="text-2xl font-semibold tracking-tight">方剂列表</h1>
+          <p className="text-sm text-muted-foreground mt-2">收录共 {totalItems} 个方剂</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative w-[320px]">
@@ -60,7 +60,7 @@ export default function Home() {
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="搜索处方名称、包含中药名称..."
+              placeholder="搜索方剂名称、包含中药名称..."
               className="pl-10 pr-4"
             />
           </div>

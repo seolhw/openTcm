@@ -142,7 +142,7 @@ export default function SearchPage() {
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-semibold tracking-tight">搜索</h1>
           <p className="text-sm text-muted-foreground">
-            搜索中医处方和中药信息（按回车添加多个关键词）
+            搜索中医方剂和中药信息（按回车添加多个关键词）
           </p>
         </div>
 
@@ -153,7 +153,7 @@ export default function SearchPage() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={handleInputKeyDown}
-              placeholder={searchTags.length ? '继续输入关键词...' : '搜索处方名称、中药名称...'}
+              placeholder={searchTags.length ? '继续输入关键词...' : '搜索方剂名称、中药名称...'}
               className="pl-10 pr-10"
             />
             {(searchInput || searchTags.length > 0) && (
@@ -205,7 +205,7 @@ export default function SearchPage() {
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="prescription" id="prescription" />
                       <Label htmlFor="prescription" className="font-normal">
-                        处方
+                        方剂
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -410,7 +410,7 @@ export default function SearchPage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium">
-              {advancedParams.type === 'prescription' ? '处方搜索结果' : '中药搜索结果'}
+              {advancedParams.type === 'prescription' ? '方剂搜索结果' : '中药搜索结果'}
             </h2>
             <span className="text-sm text-muted-foreground">找到 {totalItems} 个结果</span>
           </div>

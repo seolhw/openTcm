@@ -30,7 +30,7 @@ export function PrescriptionCard({
                   <Share2 className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="bottom">分享处方</TooltipContent>
+              <TooltipContent side="bottom">分享方剂</TooltipContent>
             </Tooltip>
           </TooltipProvider>
           <TooltipProvider>
@@ -40,7 +40,7 @@ export function PrescriptionCard({
                   <BookmarkPlus className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="bottom">收藏处方</TooltipContent>
+              <TooltipContent side="bottom">收藏方剂</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
