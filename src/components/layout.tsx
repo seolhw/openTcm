@@ -14,6 +14,7 @@ import {
 } from './ui/sidebar'
 import { Home, Book, Search } from 'lucide-react'
 import { AppProvider } from '@/providers/app-provider'
+import { PWAPrompt } from './pwa-prompt'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -59,6 +60,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <main className="flex-1 overflow-auto w-full">
             <div className="h-full py-4 px-8 w-full">{children}</div>
           </main>
+          <PWAPrompt />
         </div>
       </SidebarProvider>
     </AppProvider>

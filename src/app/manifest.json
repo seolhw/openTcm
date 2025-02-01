@@ -1,21 +1,37 @@
 {
-  "name": "OpenTcm",
+  "name": "OpenTcm - 中医处方数据库",
   "short_name": "OpenTcm",
+  "description": "开放中医药数据库，提供中草药、方剂查询和学习",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     },
     {
       "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "搜索处方",
+      "url": "/search",
+      "description": "快速搜索中医处方"
+    },
+    {
+      "name": "中药库",
+      "url": "/tmc",
+      "description": "浏览中药信息"
+    }
+  ]
 }

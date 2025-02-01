@@ -2,8 +2,8 @@ import Layout from '@/components/layout'
 import '@/global.css'
 
 export const metadata = {
-  title: 'OpenTcm',
-  description: 'OpenTcm',
+  title: 'OpenTcm - 中医处方数据库',
+  description: '开放中医药数据库，提供中草药、方剂查询和学习',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
