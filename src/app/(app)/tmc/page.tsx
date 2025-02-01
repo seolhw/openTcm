@@ -2,9 +2,9 @@
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, Filter } from 'lucide-react'
+import { Search, Filter, ArrowUp, Loader2 } from 'lucide-react'
 import { useTmcs } from '@/hooks/use-tmc'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Pagination,
   PaginationContent,
@@ -15,120 +15,84 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination'
 import { HerbCard } from '@/components/herb-card'
+import { Tmc } from '@/payload-types'
+import { useDebounce } from 'use-debounce'
 
-export default function Tmc() {
-  const [currentPage, setCurrentPage] = useState(1)
+export default function TmcPage() {
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const { data, isLoading } = useTmcs(currentPage)
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500)
 
-  const tmcs = data?.docs || []
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  const { data, isLoading } = useTmcs(debouncedSearchQuery)
+
+  const tmcsData = data?.docs || []
   const totalItems = data?.totalDocs || 0
-  const totalPages = data?.totalPages || 0
 
-  // 生成页码数组
-  const getPageNumbers = () => {
-    const pages = []
-    const maxVisiblePages = 5
-    const halfVisible = Math.floor(maxVisiblePages / 2)
-
-    let startPage = Math.max(currentPage - halfVisible, 1)
-    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages)
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(endPage - maxVisiblePages + 1, 1)
+  useEffect(() => {
+    const handleScroll = () => {
+      // 当页面滚动超过 300px 时显示按钮
+      setShowScrollTop(window.scrollY > 300)
     }
 
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i)
-    }
-    return pages
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }
 
   return (
-    <div className="container mx-auto space-y-4">
-      <div className="flex items-center justify-between gap-8">
+    <div className="container mx-auto space-y-4 px-4 sm:px-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-8">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">中药列表</h1>
-          <p className="text-sm text-muted-foreground mt-2">收录共 {totalItems} 个中药</p>
+          <p className="text-sm text-muted-foreground mt-2">共 {totalItems} 个中药</p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="relative w-[320px]">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+          <div className="relative w-full sm:w-[320px]">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="搜索中药名称..." className="pl-10 pr-4" />
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="搜索中药名称..."
+              className="pl-10 pr-4"
+            />
           </div>
-          <Button variant="outline" className="gap-2 px-5">
+          {/* <Button variant="outline" className="gap-2 px-5">
             <Filter className="h-4 w-4" />
             筛选
-          </Button>
+          </Button> */}
         </div>
       </div>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-            />
-          </PaginationItem>
-
-          {currentPage > 2 && (
-            <>
-              <PaginationItem>
-                <PaginationLink onClick={() => setCurrentPage(1)}>1</PaginationLink>
-              </PaginationItem>
-              {currentPage > 3 && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-            </>
-          )}
-
-          {getPageNumbers().map((pageNum) => (
-            <PaginationItem key={pageNum}>
-              <PaginationLink
-                onClick={() => setCurrentPage(pageNum)}
-                isActive={currentPage === pageNum}
-              >
-                {pageNum}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-
-          {currentPage < totalPages - 1 && (
-            <>
-              {currentPage < totalPages - 2 && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-              <PaginationItem>
-                <PaginationLink onClick={() => setCurrentPage(totalPages)}>
-                  {totalPages}
-                </PaginationLink>
-              </PaginationItem>
-            </>
-          )}
-
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              className={
-                currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-screen">Loading...</div>
+        <div className="flex justify-center items-center h-screen">
+          <Loader2 className="h-4 w-4 animate-spin" />
+        </div>
       ) : (
         <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {tmcs.map((tmc) => (
-            <HerbCard key={tmc.id} {...tmc} />
+          {(tmcsData as Tmc[]).map((tmc, index) => (
+            <HerbCard key={tmc.id} {...tmc} index={index + 1} />
           ))}
         </div>
+      )}
+
+      {showScrollTop && (
+        <Button
+          variant="outline"
+          size="icon"
+          className="fixed bottom-6 right-6 z-50 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+          onClick={scrollToTop}
+          aria-label="返回顶部"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </Button>
       )}
     </div>
   )

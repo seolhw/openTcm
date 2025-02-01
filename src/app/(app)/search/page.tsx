@@ -2,8 +2,8 @@
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Loader2, Search, X } from 'lucide-react'
-import { useState, KeyboardEvent, useEffect, useMemo, useRef } from 'react'
+import { ArrowUp, Loader2, Search, X } from 'lucide-react'
+import { useState, KeyboardEvent, useEffect, useMemo, useRef, use } from 'react'
 import { useDebounce } from 'use-debounce'
 import {
   Accordion,
@@ -46,6 +46,7 @@ export default function SearchPage() {
   const [searchInput, setSearchInput] = useState('')
   const [searchTags, setSearchTags] = useState<string[]>([])
   const [items, setItems] = useState<Prescription[] | Tmc[]>([])
+  const [showScrollTop, setShowScrollTop] = useState(false)
   // const [searchQuery] = useDebounce(searchTags.join(' '), 500)
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -156,24 +157,57 @@ export default function SearchPage() {
     setCurrentPage(1)
   }
 
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   const { ref, inView } = useInView()
 
+  const getMore = useMemo(() => {
+    return inView && hasMore && !isLoading && !isLoadingMore && searchTags.length > 0
+  }, [inView, hasMore, isLoading, isLoadingMore, searchTags])
+
+  const [debouncedGetMore] = useDebounce(getMore, 500)
+
   useEffect(() => {
-    if (inView && hasMore && !isLoading && !isLoadingMore && searchTags.length > 0) {
+    if (debouncedGetMore) {
       setIsLoadingMore(true)
       setCurrentPage((prev) => prev + 1)
     }
-  }, [inView, hasMore, isLoading, isLoadingMore, searchTags])
+  }, [debouncedGetMore])
 
   useEffect(() => {
-    if (currentData) {
+    if (currentData?.totalPages) {
       setHasMore(currentPage < (currentData.totalPages || 1))
       setIsLoadingMore(false)
     }
   }, [currentData, currentPage])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // 当页面滚动超过 300px 时显示按钮
+      setShowScrollTop(window.scrollY > 300)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+
+  useEffect(() => {
+    setCurrentPage(1)
+    setItems([])
+  }, [advancedParams])
+
+  useEffect(() => {
+    setCurrentPage(1)
+    setItems([])
+  }, [searchTags])
 
   return (
     <div className="container mx-auto space-y-6">
@@ -281,6 +315,7 @@ export default function SearchPage() {
                               ? [...advancedParams.searchFields, 'name']
                               : advancedParams.searchFields.filter((f) => f !== 'name')
                             setAdvancedParams((prev) => ({ ...prev, searchFields: fields }))
+                            setCurrentPage(1)
                           }}
                         />
                         <Label htmlFor="name" className="font-normal">
@@ -468,26 +503,35 @@ export default function SearchPage() {
                     />
                   </div>
                 ))
-              : (items as Tmc[]).map((tmc: Tmc) => (
+              : (items as Tmc[]).map((tmc: Tmc, index: number) => (
                   <div
                     key={tmc.id}
                     className="animate-in fade-in duration-500 slide-in-from-bottom-4"
                   >
-                    <HerbCard {...tmc} keywords={searchKeywords} />
+                    <HerbCard index={index + 1} {...tmc} keywords={searchKeywords} />
                   </div>
                 ))}
           </div>
         </div>
       )}
 
-      <div
-        ref={ref}
-        className={`flex items-center justify-center py-8 ${
-          searchTags.length > 0 && hasMore ? 'block' : 'hidden'
-        }`}
-      >
-        <Loader2 className="h-4 w-4 animate-spin" />
+      <div ref={ref} className={`flex items-center justify-center py-8 h-20`}>
+        <Loader2
+          className={`h-4 w-4 animate-spin ${searchTags.length > 0 && hasMore ? 'block' : 'hidden'}`}
+        />
       </div>
+
+      {showScrollTop && (
+        <Button
+          variant="outline"
+          size="icon"
+          className="fixed bottom-6 right-6 z-50 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+          onClick={scrollToTop}
+          aria-label="返回顶部"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   )
 }

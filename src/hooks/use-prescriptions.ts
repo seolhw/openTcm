@@ -6,11 +6,17 @@ import { getPrescriptions, getPrescription, createPrescription, search } from '@
 import { GetOrCreateCollectionsResult } from '@/payload-types-more'
 
 // 获取方剂列表
-export function usePrescriptions(page: number) {
+export function usePrescriptions(query: string) {
   return useSWR(
-    `prescriptions-${page}`,
+    `prescriptions-${query}`,
     async () => {
-      const result = await getPrescriptions(page)
+      const result = await search({
+        page: 1,
+        limit: 50,
+        collection: 'prescription',
+        query: [query],
+        fields: ['name'],
+      })
       return result
     },
     {
