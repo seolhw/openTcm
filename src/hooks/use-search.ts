@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import { search } from '@/lib/api'
+import { useState, useEffect } from 'react'
 
 export interface SearchParams {
   query: string[]
@@ -10,16 +11,41 @@ export interface SearchParams {
 }
 
 export function useSearch({ query, fields, page, limit, collection }: SearchParams) {
-  return useSWR(
-    query ? ['search', collection, query.join(','), fields.join(','), page, limit] : null,
+  const [accumulatedDocs, setAccumulatedDocs] = useState<any[]>([])
+
+  const { data, isLoading } = useSWR(
+    query.length ? ['search', query.join(' '), fields, page, collection] : null,
     async () => {
-      const result = await search({ query, fields, page, limit, collection })
+      const result = await search({
+        query,
+        fields,
+        page,
+        limit,
+        collection,
+      })
       return result
     },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      revalidateOnMount: false,
     },
   )
+
+  useEffect(() => {
+    if (data) {
+      if (page === 1) {
+        setAccumulatedDocs(data.docs)
+      } else {
+        setAccumulatedDocs((prev) => [...prev, ...data.docs])
+      }
+    }
+  }, [data, page])
+
+  return {
+    data: {
+      ...data,
+      docs: accumulatedDocs,
+    },
+    isLoading,
+  }
 }

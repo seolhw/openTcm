@@ -2,8 +2,8 @@
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, X } from 'lucide-react'
-import { useState, KeyboardEvent } from 'react'
+import { Loader2, Search, X } from 'lucide-react'
+import { useState, KeyboardEvent, useEffect, useMemo, useRef } from 'react'
 import { useDebounce } from 'use-debounce'
 import {
   Accordion,
@@ -29,6 +29,8 @@ import {
   PaginationEllipsis,
 } from '@/components/ui/pagination'
 import { Badge } from '@/components/ui/badge'
+import { useInView } from 'react-intersection-observer'
+import { effect } from 'zod'
 
 type SearchType = 'prescription' | 'tmc'
 
@@ -43,7 +45,7 @@ const tmcFields = ['name', 'taste', 'meridian'] as const
 export default function SearchPage() {
   const [searchInput, setSearchInput] = useState('')
   const [searchTags, setSearchTags] = useState<string[]>([])
-
+  const [items, setItems] = useState<Prescription[] | Tmc[]>([])
   // const [searchQuery] = useDebounce(searchTags.join(' '), 500)
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -64,9 +66,27 @@ export default function SearchPage() {
   })
 
   // 根据当前搜索类型获取相应的数据
-  const items = currentData?.docs || []
-  const totalItems = currentData?.totalDocs || 0
-  const totalPages = currentData?.totalPages || 0
+  useEffect(() => {
+    setItems((prev) => {
+      return [...new Set([...prev, ...(currentData?.docs || [])])]
+    })
+  }, [currentData?.docs])
+
+  const totalItemsRef = useRef(0)
+  const totalPagesRef = useRef(0)
+  const totalItems = useMemo(() => {
+    if (currentData?.totalDocs) {
+      totalItemsRef.current = currentData.totalDocs || 0
+    }
+    return totalItemsRef.current || 0
+  }, [currentData])
+
+  const totalPages = useMemo(() => {
+    if (currentData?.totalPages) {
+      totalPagesRef.current = currentData.totalPages || 0
+    }
+    return totalPagesRef.current || 0
+  }, [currentData])
 
   // 生成页码数组
   const getPageNumbers = () => {
@@ -135,6 +155,25 @@ export default function SearchPage() {
     setAdvancedParams((prev) => ({ ...prev, type: value, searchFields: ['name'] }))
     setCurrentPage(1)
   }
+
+  const [hasMore, setHasMore] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+
+  const { ref, inView } = useInView()
+
+  useEffect(() => {
+    if (inView && hasMore && !isLoading && !isLoadingMore && searchTags.length > 0) {
+      setIsLoadingMore(true)
+      setCurrentPage((prev) => prev + 1)
+    }
+  }, [inView, hasMore, isLoading, isLoadingMore, searchTags])
+
+  useEffect(() => {
+    if (currentData) {
+      setHasMore(currentPage < (currentData.totalPages || 1))
+      setIsLoadingMore(false)
+    }
+  }, [currentData, currentPage])
 
   return (
     <div className="container mx-auto space-y-6">
@@ -335,7 +374,7 @@ export default function SearchPage() {
         </Accordion>
       </div>
 
-      {searchTags.length > 0 && totalPages > 1 && (
+      {/* {searchTags.length > 0 && totalPages > 1 && (
         <Pagination>
           <PaginationContent>
             <PaginationItem>
@@ -392,7 +431,7 @@ export default function SearchPage() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      )}
+      )} */}
 
       {searchTags.length > 0 && totalItems === 0 && !isLoading && (
         <div className="flex items-center justify-center h-40">
@@ -400,9 +439,9 @@ export default function SearchPage() {
         </div>
       )}
 
-      {searchTags.length > 0 && isLoading && (
+      {searchTags.length > 0 && isLoading && totalPages === 0 && (
         <div className="flex items-center justify-center h-40">
-          <p className="text-sm text-muted-foreground">加载中...</p>
+          <Loader2 className="h-4 w-4 animate-spin" />
         </div>
       )}
 
@@ -417,19 +456,38 @@ export default function SearchPage() {
 
           <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {advancedParams.type === 'prescription'
-              ? (items as Prescription[]).map((prescription: Prescription) => (
-                  <PrescriptionCard
+              ? (items as Prescription[]).map((prescription: Prescription, index: number) => (
+                  <div
                     key={prescription.id}
-                    {...prescription}
-                    keywords={searchKeywords}
-                  />
+                    className="animate-in fade-in duration-500 slide-in-from-bottom-4"
+                  >
+                    <PrescriptionCard
+                      index={index + 1}
+                      {...prescription}
+                      keywords={searchKeywords}
+                    />
+                  </div>
                 ))
               : (items as Tmc[]).map((tmc: Tmc) => (
-                  <HerbCard key={tmc.id} {...tmc} keywords={searchKeywords} />
+                  <div
+                    key={tmc.id}
+                    className="animate-in fade-in duration-500 slide-in-from-bottom-4"
+                  >
+                    <HerbCard {...tmc} keywords={searchKeywords} />
+                  </div>
                 ))}
           </div>
         </div>
       )}
+
+      <div
+        ref={ref}
+        className={`flex items-center justify-center py-8 ${
+          searchTags.length > 0 && hasMore ? 'block' : 'hidden'
+        }`}
+      >
+        <Loader2 className="h-4 w-4 animate-spin" />
+      </div>
     </div>
   )
 }

@@ -7,20 +7,28 @@ import { HighlightText } from './highlight-text'
 
 interface PrescriptionCardProps extends Prescription {
   keywords?: string[]
+  index?: number
 }
 
 export function PrescriptionCard({
+  id,
   name,
   composition,
   mainIndication,
   keywords = [],
+  index,
   ...props
 }: PrescriptionCardProps) {
   return (
-    <Card className="w-full group hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
+    <Card
+      className="w-full group hover:shadow-md transition-all duration-300 hover:scale-[1.02]"
+      data-prescription-id={id}
+    >
       <CardHeader className="flex flex-row items-center justify-between pb-4 pt-5 px-6">
         <CardTitle className="text-xl font-medium tracking-tight">
+          {index && <span className="text-muted-foreground mr-2">{index}.</span>}
           <HighlightText text={name} keywords={keywords} />
+          <span className="text-sm  text-muted-foreground ml-2">#{id}</span>
         </CardTitle>
         <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
           <TooltipProvider>
