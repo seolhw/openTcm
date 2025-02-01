@@ -34,6 +34,12 @@ export const SidebarMenuLink = () => {
     <SidebarMenu className="space-y-1" onClick={() => toggleSidebar()}>
       <SidebarMenuButton asChild>
         <Link href="/" className="gap-3 px-4 py-2">
+          <Search className="h-4 w-4" />
+          <span>高级搜索</span>
+        </Link>
+      </SidebarMenuButton>
+      <SidebarMenuButton asChild>
+        <Link href="/prescription" className="gap-3 px-4 py-2">
           <Flower2 className="h-4 w-4" />
           <span>方剂库</span>
         </Link>
@@ -44,12 +50,6 @@ export const SidebarMenuLink = () => {
           <span>中药库</span>
         </Link>
       </SidebarMenuButton>
-      <SidebarMenuButton asChild>
-        <Link href="/search" className="gap-3 px-4 py-2">
-          <Search className="h-4 w-4" />
-          <span>高级搜索</span>
-        </Link>
-      </SidebarMenuButton>
     </SidebarMenu>
   )
 }
@@ -58,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const pageName = pathname.split('/').reverse()?.[0]
 
-  const title = pageName === 'search' ? '高级搜索' : pageName === 'tmc' ? '中药库' : '方剂库'
+  const title = pageName === 'prescription' ? '方剂库' : pageName === 'tmc' ? '中药库' : '高级搜索'
 
   return (
     <AppProvider>

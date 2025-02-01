@@ -25,13 +25,18 @@
   "shortcuts": [
     {
       "name": "搜索方剂",
-      "url": "/search",
+      "url": "/",
       "description": "快速搜索中医方剂"
     },
     {
       "name": "中药库",
       "url": "/tmc",
       "description": "浏览中药信息"
+    },
+    {
+      "name": "方剂库",
+      "url": "/prescription",
+      "description": "浏览方剂信息"
     }
   ]
 }
