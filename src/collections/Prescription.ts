@@ -57,7 +57,7 @@ export const Prescription: CollectionConfig = {
       required: false,
       options: [
         {
-          label: '1号数据库',
+          label: '国家数据库',
           value: '1',
         },
         {
