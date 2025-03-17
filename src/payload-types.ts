@@ -192,6 +192,7 @@ export interface Tmc {
   name: string;
   taste: string;
   meridian: string;
+  source?: ('1' | '2') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -220,6 +221,7 @@ export interface Search {
   effect?: string | null;
   taste?: string | null;
   meridian?: string | null;
+  source?: ('1' | '2') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -338,6 +340,7 @@ export interface TmcSelect<T extends boolean = true> {
   name?: T;
   taste?: T;
   meridian?: T;
+  source?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -355,6 +358,7 @@ export interface SearchSelect<T extends boolean = true> {
   effect?: T;
   taste?: T;
   meridian?: T;
+  source?: T;
   updatedAt?: T;
   createdAt?: T;
 }
