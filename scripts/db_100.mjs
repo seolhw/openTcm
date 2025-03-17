@@ -27,9 +27,12 @@ async function convertToLexicalFormat(title, content) {
 
   return editor
 }
+// 89, 87, 82, 79, 78, 48, 46, 10
+// 94 10 89 82 78 87 48
 
-for (let i = 11; i <= 100; i++) {
-  const url = `https://culture.pkstate.com/tcm3/jingfangyibaishou/${i}.html`
+//  46
+;[94, 89, 87, 82, 79, 78, 48, 46, 10].forEach(async (e, i) => {
+  const url = `https://culture.pkstate.com/tcm3/jingfangyibaishou/${e}.html`
 
   const data = await fetch(url).then((res) => res.text())
 
@@ -46,7 +49,7 @@ for (let i = 11; i <= 100; i++) {
   // 截取并清洗组成用法数据
   const composition =
     preContent
-      .match(/\[组成用法\]([\s\S]*?)\[方证\]/)?.[1]
+      .match(/\[组成用法[\]）]([\s\S]*?)\[方证[\]）(l1)]/)?.[1]
       ?.replace(/\[.*?\]/g, '') // 移除所有 [...] 标记
       ?.replace(/<[^>]+>/g, '') // 移除所有 HTML 标签
       ?.replace(/\s+/g, ' ') // 将多个空白字符替换为单个空格
@@ -55,13 +58,30 @@ for (let i = 11; i <= 100; i++) {
 
   const fz =
     preContent
-      .match(/\[方证\]([\s\S]*?)\[现代应用/)?.[1]
+      .match(/\[方证[\]）(l1)]([\s\S]*?)\[[(现代应用)(经验参考)]/)?.[1]
       ?.replace(/\[.*?\]/g, '') // 移除所有 [...] 标记
       ?.replace(/<[^>]+>/g, '') // 移除所有 HTML 标签
       ?.replace(/\s+/g, ' ') // 将多个空白字符替换为单个空格
       ?.replace(/\n/g, '')
       ?.trim() || ''
-  console.log(i, fz)
+
+  // const data2 = await fetch(
+  //   `https://opentcm.huiwang.fun/api/prescription?where[and][0][name][equals]=${h1Content}&where[and][1][source][equals]=2`,
+  //   {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   },
+  // ).then((res) => res.json())
+  // // console.log(data2)
+  // // 94,89,87,82,79,78,48,46,10,
+  // if (data2.totalDocs != 1) {
+  //   console.log('不正常: ', i)
+  // } else {
+  //   console.log('zhengc: ', i, data2.docs[0]?.name)
+  // }
+  // console.log('data2', data2.totalPages == 1)
 
   // 转换为 Lexical 格式
   const lexical = await convertToLexicalFormat(h1Content, preContent)
@@ -87,6 +107,6 @@ for (let i = 11; i <= 100; i++) {
       detailed: detailed,
     }),
   })
-}
+})
 
 // console.log('data', h1Content, preContent)
